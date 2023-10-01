@@ -47,9 +47,9 @@
   bottom: 0;
   left: 0;
   display: flex;
-
+  justify-content: space-between;
   height: 80px;
-  width: 100%;
+  width: 98%;
   padding: 0 20px;
   background-color: #1f2937;
 }
@@ -57,6 +57,22 @@
 .credit {
   height: 100%;
   width: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+}
+
+.control select {
+  margin-left: 10px;
+  padding: 5px;
+}
+
+.alertbox {
+  height: 100%;
   display: flex;
   align-items: center;
 }

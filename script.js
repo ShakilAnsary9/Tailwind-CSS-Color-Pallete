@@ -410,7 +410,20 @@ function generateColorPalette() {
   });
 }
 
-// Function to copy color code to clipboard
+//new
+// Function to show an alert message inside the "alert" div
+function showAlert(message) {
+  const alertDiv = document.getElementById("alert");
+  alertDiv.textContent = message;
+  alertDiv.style.display = "block";
+
+  // Set a timeout to hide the alert after 3 seconds (3000 milliseconds)
+  setTimeout(() => {
+    alertDiv.style.display = "none";
+  }, 3000);
+}
+
+// Modify the copyColorCode function to use showAlert
 function copyColorCode(event) {
   const colorButton = event.target;
   const selectedFormat = document.getElementById("colorFormat").value;
@@ -446,8 +459,8 @@ function copyColorCode(event) {
   // Remove the temporary textarea
   document.body.removeChild(textarea);
 
-  // Alert the user that the color code has been copied
-  alert(`Copied color code: ${colorCode}`);
+  // Show the alert with the copied color code
+  showAlert(`😋 Copied color code: ${colorCode}`);
 }
 
 // Function to convert RGB color to hex code
