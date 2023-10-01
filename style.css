@@ -9,9 +9,12 @@
   color: white;
   height: 100vh;
   background-color: #111827;
+  padding: 0 20px;
+  position: relative;
+  overflow: hidden;
 }
 
-.palletes {
+.palettes {
   display: grid;
   grid-template-columns: repeat(22, minmax(0, 1fr));
   grid-template-rows: -webkit-min-content repeat(10, minmax(0, 1fr));
@@ -19,17 +22,73 @@
   grid-auto-flow: column;
   grid-column-gap: 0.25rem;
   -moz-column-gap: 0.25rem;
-  column-gap: 0.25rem;
+  column-gap: 0.5rem;
   grid-row-gap: 0.25rem;
-  row-gap: 0.25rem;
+  row-gap: 0.5rem;
   flex-grow: 1;
   overflow: auto;
 }
 
 .color {
-  height: 2.5rem;
-  pointer-events: none;
+  height: 3rem;
   outline: 0 !important;
   border: none !important;
   border-radius: 8px;
+  cursor: pointer;
+}
+
+.palette-name {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 80px;
+  width: 100%;
+  padding: 0 20px;
+  background-color: #1f2937;
+}
+
+.credit {
+  height: 100%;
+  width: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.shakil,
+.parvin {
+  height: 50px;
+  width: 50px;
+  border-radius: 50px;
+}
+
+.shakil img,
+.parvin img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50px;
+  border: 3px solid #1a56db;
+  outline: 3px solid #1f2937;
+}
+
+.shakil {
+  position: relative;
+  z-index: 9;
+}
+
+.parvin {
+  position: relative;
+  z-index: 1;
+  margin-left: -10px;
+}
+
+.profiles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
 }
