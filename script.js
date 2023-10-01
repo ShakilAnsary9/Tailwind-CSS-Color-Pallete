@@ -351,17 +351,88 @@ function generateColorPalette() {
   });
 }
 
-// Function to copy color hex code to clipboard
-function copyColorHexCode(event) {
-  const colorButton = event.target;
-  const rgbColor = colorButton.style.backgroundColor;
+// // Function to copy color hex code to clipboard
+// function copyColorHexCode(event) {
+//   const colorButton = event.target;
+//   const rgbColor = colorButton.style.backgroundColor;
 
-  // Convert RGB color to hex code
-  const hexColor = rgbToHex(rgbColor);
+//   // Convert RGB color to hex code
+//   const hexColor = rgbToHex(rgbColor);
+
+//   // Create a temporary textarea element to copy the color code
+//   const textarea = document.createElement("textarea");
+//   textarea.value = hexColor;
+
+//   // Append the textarea to the document
+//   document.body.appendChild(textarea);
+
+//   // Select the text inside the textarea
+//   textarea.select();
+
+//   // Copy the selected text to the clipboard
+//   document.execCommand("copy");
+
+//   // Remove the temporary textarea
+//   document.body.removeChild(textarea);
+
+//   // Alert the user that the color code has been copied
+//   alert(`Copied color code: ${hexColor}`);
+// }
+
+// // Function to convert RGB color to hex code
+// function rgbToHex(rgb) {
+//   const [r, g, b] = rgb.match(/\d+/g);
+//   return `#${Number(r).toString(16)}${Number(g).toString(16)}${Number(
+//     b
+//   ).toString(16)}`;
+// }
+
+// // Generate the color palette when the page loads
+// window.addEventListener("load", generateColorPalette);
+
+// Function to generate the color palette
+function generateColorPalette() {
+  const colorPalette = document.getElementById("colorPalette");
+
+  colorData.forEach((palette) => {
+    const paletteName = document.createElement("div");
+    paletteName.classList.add("palette-name");
+    paletteName.textContent = palette.name;
+    colorPalette.appendChild(paletteName);
+
+    palette.colors.forEach((color) => {
+      const colorButton = document.createElement("button");
+      colorButton.classList.add("color");
+      colorButton.style.backgroundColor = color;
+      colorButton.addEventListener("click", copyColorCode);
+      colorPalette.appendChild(colorButton);
+    });
+  });
+}
+
+// Function to copy color code to clipboard
+function copyColorCode(event) {
+  const colorButton = event.target;
+  const selectedFormat = document.getElementById("colorFormat").value;
+  let colorCode;
+
+  switch (selectedFormat) {
+    case "hex":
+      colorCode = rgbToHex(getComputedStyle(colorButton).backgroundColor);
+      break;
+    case "rgb":
+      colorCode = getComputedStyle(colorButton).backgroundColor;
+      break;
+    case "hsl":
+      colorCode = rgbToHsl(getComputedStyle(colorButton).backgroundColor);
+      break;
+    default:
+      colorCode = getComputedStyle(colorButton).backgroundColor;
+  }
 
   // Create a temporary textarea element to copy the color code
   const textarea = document.createElement("textarea");
-  textarea.value = hexColor;
+  textarea.value = colorCode;
 
   // Append the textarea to the document
   document.body.appendChild(textarea);
@@ -376,15 +447,55 @@ function copyColorHexCode(event) {
   document.body.removeChild(textarea);
 
   // Alert the user that the color code has been copied
-  alert(`Copied color code: ${hexColor}`);
+  alert(`Copied color code: ${colorCode}`);
 }
 
 // Function to convert RGB color to hex code
 function rgbToHex(rgb) {
   const [r, g, b] = rgb.match(/\d+/g);
-  return `#${Number(r).toString(16)}${Number(g).toString(16)}${Number(
-    b
-  ).toString(16)}`;
+  return `#${Number(r).toString(16).padStart(2, "0")}${Number(g)
+    .toString(16)
+    .padStart(2, "0")}${Number(b).toString(16).padStart(2, "0")}`;
+}
+
+// Function to convert RGB color to HSL code
+function rgbToHsl(rgb) {
+  const [r, g, b] = rgb.match(/\d+/g).map(Number);
+  const rRatio = r / 255;
+  const gRatio = g / 255;
+  const bRatio = b / 255;
+
+  const max = Math.max(rRatio, gRatio, bRatio);
+  const min = Math.min(rRatio, gRatio, bRatio);
+
+  let h, s, l;
+
+  const lightness = (max + min) / 2;
+
+  if (max === min) {
+    h = s = 0; // achromatic
+  } else {
+    const d = max - min;
+    s = lightness > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case rRatio:
+        h = (gRatio - bRatio) / d + (gRatio < bRatio ? 6 : 0);
+        break;
+      case gRatio:
+        h = (bRatio - rRatio) / d + 2;
+        break;
+      case bRatio:
+        h = (rRatio - gRatio) / d + 4;
+        break;
+    }
+    h /= 6;
+  }
+
+  const hInDegrees = Math.round(h * 360);
+  const sInPercent = Math.round(s * 100);
+  const lInPercent = Math.round(lightness * 100);
+
+  return `hsl(${hInDegrees}, ${sInPercent}%, ${lInPercent}%)`;
 }
 
 // Generate the color palette when the page loads
